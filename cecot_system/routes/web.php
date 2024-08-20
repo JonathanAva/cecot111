@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CeldaController; // Asegúrate de importar el controlador correcto
+use App\Http\Controllers\CeldaController;
+use App\Http\Controllers\UserController; // Importa el UserController
 
 // Redirige la raíz al login
 Route::get('/', function () {
@@ -16,19 +17,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
-    Route::get('/admin', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
 
-    Route::get('/user', function () {
-        return view('user.dashboard');
-    })->name('user.dashboard');
-    
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    // Rutas accesibles solo para administradores
+    Route::get('/admin', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
 
-    // Ruta para el CRUD de celdas solo accesible para el administrador
+    // Ruta para gestionar celdas (solo administrador)
     Route::resource('celdas', CeldaController::class)->middleware('auth');
-});
 
+    // Rutas accesibles solo para usuarios normales
+    Route::get('/user', [UserController::class, 'userDashboard'])->name('user.dashboard');
+
+    // Ruta genérica para todos los usuarios autenticados
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+});

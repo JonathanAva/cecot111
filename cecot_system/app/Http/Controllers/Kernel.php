@@ -32,13 +32,6 @@ class Kernel extends HttpKernel
         ],
     ];
 
-
-    protected $routeMiddleware = [
-        // otros middleware
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
-    ];
-    
-
     /**
      * The application's route middleware.
      *
@@ -46,8 +39,4 @@ class Kernel extends HttpKernel
      *
      * @var array
      */
-    protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
-        // Other middleware...
-    ];
 }
