@@ -21,7 +21,8 @@ class AuthController extends Controller
             'nombre_usuario' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
-
+    
+       
         // Intentar la autenticación usando 'nombre_usuario' y 'password'
         if (Auth::attempt(['nombre_usuario' => $credentials['nombre_usuario'], 'password' => $credentials['password']])) {
             // Si la autenticación es exitosa, redirigir según el rol del usuario
@@ -31,10 +32,11 @@ class AuthController extends Controller
                 return redirect()->route('user.dashboard');
             }
         }
-
+    
         // Si la autenticación falla, redirigir de vuelta al formulario de login con un mensaje de error
         return back()->withErrors(['message' => 'Credenciales incorrectas']);
     }
+    
 
     // Maneja el cierre de sesión
     public function logout(Request $request)

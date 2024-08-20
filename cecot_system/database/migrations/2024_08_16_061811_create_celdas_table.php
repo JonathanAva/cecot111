@@ -16,13 +16,9 @@ return new class extends Migration
             $table->integer('numeroCelda');
             $table->boolean('estado');
             $table->integer('capacidad');
-            $table->integer('numeroDePresos');
-            $table->unsignedBigInteger('id_preso');  
-            $table->foreign('id_preso')->references('id_preso')->on('presos')->onDelete('cascade');
-        
+            $table->integer('numeroDePresos')->default(0); // Agregando default 0
             $table->timestamps();
         });
-          
     }
 
     /**
@@ -33,3 +29,4 @@ return new class extends Migration
         Schema::dropIfExists('celdas');
     }
 };
+

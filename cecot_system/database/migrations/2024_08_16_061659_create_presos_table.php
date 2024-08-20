@@ -21,6 +21,11 @@ return new class extends Migration
             $table->date('fechaLiberacion')->nullable();
             $table->string('estado');
             $table->integer('condena');
+
+            // Agregar la relación con la tabla celdas
+            $table->unsignedBigInteger('id_celda');
+            $table->foreign('id_celda')->references('id_celda')->on('celdas')->onDelete('cascade');
+
             $table->timestamps();
         });   
     }
