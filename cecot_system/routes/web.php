@@ -3,16 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
-// Ruta para mostrar el formulario de login
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-
-// Ruta para manejar el login (POST)
 Route::post('/login', [AuthController::class, 'login']);
-
-// Ruta protegida para el dashboard (requiere autenticación)
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
-
-// Ruta para cerrar sesión
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+
+    Route::get('/user', function () {
+        return view('user.dashboard');
+    })->name('user.dashboard');
+    
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
+

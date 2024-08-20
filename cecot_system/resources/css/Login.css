@@ -1,0 +1,63 @@
+body {
+    background-image: url('../multimedia/CECOT.png'); 
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+    color: #fff;
+}
+
+.container-fluid {
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.login-box {
+    max-width: 700px; /* Aumenta el ancho del formulario */
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.9); 
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.login-box h2, .login-box p {
+    text-align: center; /* Centrando el texto de bienvenida */
+}
+
+.login-box h2 {
+    font-size: 36px; /* Aumenta el tamaño del texto */
+    margin-bottom: 20px;
+}
+
+.login-box p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.form-control {
+    font-size: 18px; /* Aumenta el tamaño del texto en los campos */
+    height: 50px; /* Aumenta la altura de los campos */
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    font-size: 20px; /* Aumenta el tamaño del texto en el botón */
+    padding: 15px; /* Aumenta el padding del botón */
+}
+
+.ml-5 {
+    margin-left: 50px;
+}
+
+label {
+    color: #333; /* Color de las etiquetas */
+}
+
+.btn-primary {
+    background-color: #00aaff;
+    border-color: #00aaff;
+}
+

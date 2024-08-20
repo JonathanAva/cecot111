@@ -9,13 +9,13 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = 'usuarios'; // Nombre de la tabla
+    protected $table = 'usuarios'; 
 
-    protected $primaryKey = 'id_usuario'; // Clave primaria
+    protected $primaryKey = 'id_usuario'; 
 
     protected $fillable = [
         'nombre_usuario',
-        'password',  // Utilizamos 'password' para mantener compatibilidad con Laravel
+        'password', 
         'rol',
         'info_contacto',
     ];
