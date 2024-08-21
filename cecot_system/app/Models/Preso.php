@@ -25,4 +25,10 @@ class Preso extends Model
     {
         return $this->belongsTo(Celda::class, 'id_celda');
     }
+// Modelo Preso.php
+    public function delitos()
+    {
+        return $this->belongsToMany(Delito::class, 'preso_delito', 'id_preso', 'id_delito');
+    }
+
 }

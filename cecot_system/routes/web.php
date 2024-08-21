@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CeldaController;
 use App\Http\Controllers\UserController; 
 use App\Http\Controllers\PresoController;
+use App\Http\Controllers\DelitoController;
+use App\Http\Controllers\PresoDelitoController;
 
 
 // Redirige la raíz al login
@@ -14,6 +16,7 @@ Route::get('/', function () {
 
 
 // Rutas de autenticación
+
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -23,10 +26,16 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas accesibles solo para administradores
     Route::get('/admin', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
+    Route::get('/presos/{id}/delitos', [PresoController::class, 'getDelitos']);
+    
 
-    // Ruta para gestionar celdas (solo administrador)
+
+    // Rutas (solo administrador)
+    
     Route::resource('celdas', CeldaController::class)->middleware('auth');
     Route::resource('presos', PresoController::class)->middleware('auth');
+    Route::resource('delitos', DelitoController::class)->middleware('auth');
+    Route::resource('preso_delito', PresoDelitoController::class)->only(['store', 'destroy']);
 
     // Rutas accesibles solo para usuarios normales
     Route::get('/user', [UserController::class, 'userDashboard'])->name('user.dashboard');

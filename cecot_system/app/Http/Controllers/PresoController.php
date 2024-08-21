@@ -12,6 +12,7 @@ class PresoController extends Controller
     // Mostrar todos los presos
     public function index()
     {
+        $presos = Preso::with('delitos')->get();
         $presos = Preso::with('celda')->get(); // Trae los presos junto con la información de la celda
         $celdas = Celda::where('estado', true)->get();  // Solo mostrar celdas activas
         return view('presos.index', compact('presos', 'celdas'));
@@ -46,6 +47,21 @@ public function store(Request $request)
 
     return response()->json($preso->load('celda'));
 }
+
+public function getDelitos($id)
+{
+    // Obtén el preso por ID
+    $preso = Preso::with('delitos')->find($id);
+
+    if ($preso) {
+        // Devuelve los delitos asociados a este preso en formato JSON
+        return response()->json(['delitos' => $preso->delitos]);
+    } else {
+        // Si no se encuentra el preso, devuelve un error
+        return response()->json(['error' => 'Preso no encontrado'], 404);
+    }
+}
+
 
 // Actualizar un preso existente
 public function update(Request $request, $id)
