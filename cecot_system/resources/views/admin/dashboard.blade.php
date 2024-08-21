@@ -23,19 +23,20 @@
                     </div>
                 </a>
 
-                <a href="#" class="card mb-3 text-decoration-none" style="height: 200px;">
+                <a href="{{ route('presos.index') }}" class="card mb-3 text-decoration-none" style="height: 200px;">
                     <div class="row g-0 h-100">
                         <div class="col-md-4 bg-custom d-flex align-items-center justify-content-center">
-                            <img src="{{ asset('images/gestionar_presos.png') }}" class="img-fluid icon" alt="Gestionar Presos">
+                            <img src="{{ asset('images/gestionar_visitas.png') }}" class="img-fluid icon" alt="Gestionar Visitas">
                         </div>
                         <div class="col-md-8 d-flex align-items-center">
                             <div class="card-body text-dark">
                                 <h5 class="card-title">Gestionar Presos</h5>
-                                <p class="card-text">Gestión completa de los internos.</p>
+                                <p class="card-text">Administra y organiza las visitas a los internos.</p>
                             </div>
                         </div>
                     </div>
                 </a>
+                
 
                 <a href="{{ route('celdas.index') }}" class="card mb-3 text-decoration-none" style="height: 200px;">
                     <div class="row g-0 h-100">

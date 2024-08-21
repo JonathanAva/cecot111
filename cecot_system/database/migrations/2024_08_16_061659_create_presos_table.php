@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->date('fechaNacimiento');
-            $table->integer('numeroIdentificacion');
+            $table->string('numeroIdentificacion')->unique();
             $table->date('fechaIngreso');
             $table->date('fechaLiberacion')->nullable();
-            $table->string('estado');
+            $table->boolean('estado');
             $table->integer('condena');
 
             // Agregar la relación con la tabla celdas

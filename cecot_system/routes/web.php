@@ -3,12 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CeldaController;
-use App\Http\Controllers\UserController; // Importa el UserController
+use App\Http\Controllers\UserController; 
+use App\Http\Controllers\PresoController;
+
 
 // Redirige la raíz al login
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
 
 // Rutas de autenticación
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -23,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Ruta para gestionar celdas (solo administrador)
     Route::resource('celdas', CeldaController::class)->middleware('auth');
+    Route::resource('presos', PresoController::class)->middleware('auth');
 
     // Rutas accesibles solo para usuarios normales
     Route::get('/user', [UserController::class, 'userDashboard'])->name('user.dashboard');

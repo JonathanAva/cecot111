@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('celdas', function (Blueprint $table) {
-            $table->id('id_celda');  
-            $table->integer('numeroCelda');
-            $table->boolean('estado');
-            $table->integer('capacidad');
-            $table->integer('numeroDePresos')->default(0); // Agregando default 0
-            $table->timestamps();
+            $table->id('id_celda');  // Llave primaria
+            $table->integer('numeroCelda')->unique();  // Número de la celda único
+            $table->boolean('estado');  // Estado de la celda (activo/inactivo)
+            $table->integer('capacidad');  // Capacidad máxima de la celda
+            $table->integer('numeroDePresos')->default(0);  // Número actual de presos, por defecto 0
+            $table->timestamps();  // Timestamps de creación y actualización
         });
     }
 
@@ -29,4 +29,5 @@ return new class extends Migration
         Schema::dropIfExists('celdas');
     }
 };
+
 

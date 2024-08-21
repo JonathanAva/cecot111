@@ -4,23 +4,26 @@
     @include('partials.navbar_admin')
 
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Datos de la celdas</h2>
+        <h2 class="text-center mb-4">Datos de las celdas</h2>
 
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Filtro de busqueda por celda" aria-label="Filtro de búsqueda">
-                    <button class="btn btn-outline-secondary" type="button">
-                        <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Buscar por ID de celda, número de celda, o estado">
+                    <button class="btn btn-outline-secondary" type="button" id="clearFilter">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
             </div>
             <div class="col-md-6 text-end">
-                <a href="{{ route('celdas.create') }}" class="btn btn-primary" style="background-color: #00ADB5;">Agregar</a>
+                <!-- Botón para abrir el modal -->
+                <button class="btn btn-primary" style="background-color: #00ADB5;" data-toggle="modal" data-target="#addCeldaModal">
+                    Agregar
+                </button>
             </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
             <table class="table table-striped table-bordered text-center">
                 <thead class="thead-dark">
                     <tr>
@@ -32,33 +35,204 @@
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Aquí agregarías los datos dinámicos de las celdas desde la base de datos -->
-                    <tr>
-                        <td>C001</td>
-                        <td>24</td>
-                        <td>100</td>
-                        <td>65</td>
-                        <td>Activo</td>
+                <tbody id="celdasTableBody">
+                    @foreach($celdas as $celda)
+                    <tr id="celdaRow{{ $celda->id_celda }}">
+                        <td>{{ $celda->id_celda }}</td>
+                        <td>{{ $celda->numeroCelda }}</td>
+                        <td>{{ $celda->capacidad }}</td>
+                        <td>{{ $celda->numeroDePresos }}</td>
+                        <td>{{ $celda->estado ? 'Activo' : 'Inactivo' }}</td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-danger me-2"><i class="fas fa-trash-alt"></i></a>
-                            <a href="#" class="btn btn-sm btn-dark"><i class="fas fa-edit"></i></a>
+                            <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="{{ $celda->id_celda }}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <button class="btn btn-sm btn-dark editCeldaBtn" data-id="{{ $celda->id_celda }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>C002</td>
-                        <td>45</td>
-                        <td>100</td>
-                        <td>0</td>
-                        <td>Inactiva</td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-danger me-2"><i class="fas fa-trash-alt"></i></a>
-                            <a href="#" class="btn btn-sm btn-dark"><i class="fas fa-edit"></i></a>
-                        </td>
-                    </tr>
-                    <!-- Fin de los datos dinámicos -->
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+
+    <!-- Modal para agregar/editar celdas -->
+    <div class="modal fade" id="addCeldaModal" tabindex="-1" role="dialog" aria-labelledby="addCeldaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCeldaModalLabel">Agregar Celda</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="celdaForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="numeroCelda" class="form-label">Número de Celda</label>
+                            <input type="number" class="form-control" id="numeroCelda" name="numeroCelda" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="capacidad" class="form-label">Capacidad</label>
+                            <input type="number" class="form-control" id="capacidad" name="capacidad" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="estado" class="form-label">Estado</label>
+                            <select class="form-select" id="estado" name="estado" required>
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" style="background-color: #00ADB5;">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+<script>
+$(document).ready(function () {
+    // Filtro de búsqueda por ID, número de celda o estado
+    $('#searchInput').on('input', function () {
+        let filter = $(this).val().toLowerCase();
+        $('#celdasTableBody tr').filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(filter) > -1);
+        });
+    });
+
+    // Limpiar el filtro
+    $('#clearFilter').on('click', function () {
+        $('#searchInput').val('');
+        $('#celdasTableBody tr').show();
+    });
+
+    // Manejar el envío del formulario para agregar/editar una celda
+    $('#celdaForm').on('submit', function (e) {
+        e.preventDefault();
+
+        let formData = {
+            numeroCelda: $('#numeroCelda').val(),
+            capacidad: $('#capacidad').val(),
+            estado: $('#estado').val(),
+        };
+
+        let url = $(this).attr('action');  // Obtén la URL del formulario
+        let method = $(this).find('input[name="_method"]').val() || 'POST';  // Obtén el método (POST o PUT)
+
+        $.ajax({
+            url: url,
+            type: method,
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            success: function (response) {
+                if (method === 'POST') {
+                    // Agregar la nueva celda a la tabla sin recargar la página
+                    $('#celdasTableBody').append(`
+                        <tr id="celdaRow${response.id_celda}">
+                            <td>${response.id_celda}</td>
+                            <td>${response.numeroCelda}</td>
+                            <td>${response.capacidad}</td>
+                            <td>${response.numeroDePresos || 0}</td>
+                            <td>${response.estado ? 'Activo' : 'Inactivo'}</td>
+                            <td>
+                                <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="${response.id_celda}">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button class="btn btn-sm btn-dark editCeldaBtn" data-id="${response.id_celda}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `);
+                } else {
+                    // Actualizar la fila de la celda en la tabla sin recargar la página
+                    $(`#celdaRow${response.id_celda}`).html(`
+                        <td>${response.id_celda}</td>
+                        <td>${response.numeroCelda}</td>
+                        <td>${response.capacidad}</td>
+                        <td>${response.numeroDePresos || 0}</td>
+                        <td>${response.estado ? 'Activo' : 'Inactivo'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="${response.id_celda}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <button class="btn btn-sm btn-dark editCeldaBtn" data-id="${response.id_celda}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    `);
+                }
+
+                // Cierra el modal y resetea el formulario
+                $('#addCeldaModal').modal('hide');
+                $('#celdaForm')[0].reset();
+                $('#celdaForm').attr('action', "{{ route('celdas.store') }}");  // Revertir a la URL de creación
+                $('input[name="_method"]').remove();  // Eliminar el método PUT si estaba presente
+            },
+            error: function (response) {
+                // Manejar errores
+                console.log(response);
+            }
+        });
+    });
+
+    // Manejar la eliminación de celdas
+    $(document).on('click', '.deleteCeldaBtn', function () {
+        let id = $(this).data('id');
+
+        if (confirm('¿Estás seguro de que deseas eliminar esta celda?')) {
+            $.ajax({
+                url: `/celdas/${id}`,
+                type: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                success: function () {
+                    $(`#celdaRow${id}`).remove();
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+    });
+
+    // Manejar la edición de celdas
+    $(document).on('click', '.editCeldaBtn', function () {
+        let id = $(this).data('id');
+
+        $.get(`/celdas/${id}/edit`, function (celda) {
+            console.log(celda);  // Depuración: Verificar que los datos lleguen correctamente
+            $('#numeroCelda').val(celda.numeroCelda);
+            $('#capacidad').val(celda.capacidad);
+            $('#estado').val(celda.estado);
+            $('#celdaForm').attr('action', `/celdas/${id}`);  // Cambiar la URL para la edición
+            $('#celdaForm').append('<input type="hidden" name="_method" value="PUT">');  // Agregar el método PUT para la edición
+            $('#addCeldaModalLabel').text('Editar Celda');
+            $('#addCeldaModal').modal('show');
+        }).fail(function(response) {
+            console.log("Error al obtener la celda:", response);  // Manejar errores de la solicitud AJAX
+        });
+    });
+
+    // Limpiar el formulario cuando se cierra el modal
+    $('#addCeldaModal').on('hidden.bs.modal', function () {
+        $('#celdaForm')[0].reset();
+        $('#celdaForm').attr('action', "{{ route('celdas.store') }}");  // Revertir a la URL de creación
+        $('input[name="_method"]').remove();  // Eliminar el método PUT si estaba presente
+        $('#addCeldaModalLabel').text('Agregar Celda');
+    });
+});
+
+
+</script>
 @endsection
