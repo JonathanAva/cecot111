@@ -34,7 +34,7 @@ public function store(Request $request)
         'fechaIngreso' => 'required|date',
         'fechaLiberacion' => 'nullable|date',
         'estado' => 'required|boolean',
-        'condena' => 'required|integer',
+        'condena' => 'required|string|max:255',
         'id_celda' => 'required|exists:celdas,id_celda',
     ]);
 
@@ -80,7 +80,7 @@ public function update(Request $request, $id)
         'fechaIngreso' => 'required|date',
         'fechaLiberacion' => 'nullable|date',
         'estado' => 'required|boolean',
-        'condena' => 'required|integer',
+        'condena' => 'required|string|max:255',
         'id_celda' => 'required|exists:celdas,id_celda',
     ]);
 

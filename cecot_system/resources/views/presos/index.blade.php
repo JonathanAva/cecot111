@@ -136,7 +136,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="condena" class="form-label">Condena</label>
-                                    <input type="number" class="form-control" id="condena" name="condena" required>
+                                    <input type="text" class="form-control" id="condena" name="condena" required>
                                 </div>
                             </div>
                             <div class="mb-3">

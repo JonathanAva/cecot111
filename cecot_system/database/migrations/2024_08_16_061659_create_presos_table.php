@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('fechaIngreso');
             $table->date('fechaLiberacion')->nullable();
             $table->boolean('estado');
-            $table->integer('condena');
+            $table->string('condena');
 
             // Agregar la relación con la tabla celdas
             $table->unsignedBigInteger('id_celda');

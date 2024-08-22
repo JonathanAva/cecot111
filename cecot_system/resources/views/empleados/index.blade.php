@@ -33,7 +33,8 @@
                         <td>{{ $empleado->info_contacto }}</td>
                         <td>
                             <a href="{{ route('empleados.edit', $empleado->id_usuario) }}" class="btn btn-sm btn-dark">Editar</a>
-                            <form action="{{ route('empleados.destroy', $empleado->id_usuario) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este empleado? Esta acción no se puede deshacer.');">
+                            <form action="{{ route('empleados.destroy', $empleado->id_usuario) }}" method="POST" style="display:inline;"
+                                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar este empleado? Esta acción no se puede deshacer.');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>

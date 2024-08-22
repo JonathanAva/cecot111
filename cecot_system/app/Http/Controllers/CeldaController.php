@@ -78,4 +78,11 @@ class CeldaController extends Controller
 
         return response()->json(['success' => 'Celda eliminada con éxito.']);
     }
+        
+    public function getPresosByCelda($id)
+    {
+        $presos = Preso::where('id_celda', $id)->get();
+        return response()->json($presos);
+    }
+
 }

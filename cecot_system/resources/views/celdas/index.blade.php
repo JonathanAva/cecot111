@@ -44,19 +44,42 @@
                         <td>{{ $celda->numeroDePresos }}</td>
                         <td>{{ $celda->estado ? 'Activo' : 'Inactivo' }}</td>
                         <td>
+                            <button class="btn btn-sm btn-info me-2 viewPresosBtn" data-id="{{ $celda->id_celda }}">
+                                Ver presos
+                            </button>
                             <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="{{ $celda->id_celda }}">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                             <button class="btn btn-sm btn-dark editCeldaBtn" data-id="{{ $celda->id_celda }}">
                                 <i class="fas fa-edit"></i>
                             </button>
-                        </td>
+                        </td>                        
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+    <div class="mt-5 mb-5">
+        <h4 class="text-center">Presos en la celda seleccionada</h4>
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <table class="table table-striped table-bordered text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID Preso</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Fecha de Ingreso</th>
+                    </tr>
+                </thead>
+                <tbody id="presosTableBody">
+                    <!-- Los presos se cargarán aquí dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
 
     <!-- Modal para agregar/editar celdas -->
     <div class="modal fade" id="addCeldaModal" tabindex="-1" role="dialog" aria-labelledby="addCeldaModalLabel" aria-hidden="true">
@@ -144,13 +167,17 @@ $(document).ready(function () {
                             <td>${response.numeroDePresos || 0}</td>
                             <td>${response.estado ? 'Activo' : 'Inactivo'}</td>
                             <td>
-                                <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="${response.id_celda}">
+                                <button class="btn btn-sm btn-info me-2 viewPresosBtn" data-id="{{ $celda->id_celda }}">
+                                    Ver presos
+                                </button>
+                                <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="{{ $celda->id_celda }}">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
-                                <button class="btn btn-sm btn-dark editCeldaBtn" data-id="${response.id_celda}">
+                                <button class="btn btn-sm btn-dark editCeldaBtn" data-id="{{ $celda->id_celda }}">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </td>
+
                         </tr>
                     `);
                 } else {
@@ -162,13 +189,17 @@ $(document).ready(function () {
                         <td>${response.numeroDePresos || 0}</td>
                         <td>${response.estado ? 'Activo' : 'Inactivo'}</td>
                         <td>
-                            <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="${response.id_celda}">
+                            <button class="btn btn-sm btn-info me-2 viewPresosBtn" data-id="{{ $celda->id_celda }}">
+                                Ver presos
+                            </button>
+                            <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="{{ $celda->id_celda }}">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
-                            <button class="btn btn-sm btn-dark editCeldaBtn" data-id="${response.id_celda}">
+                            <button class="btn btn-sm btn-dark editCeldaBtn" data-id="{{ $celda->id_celda }}">
                                 <i class="fas fa-edit"></i>
                             </button>
                         </td>
+
                     `);
                 }
 
@@ -230,6 +261,37 @@ $(document).ready(function () {
         $('#celdaForm').attr('action', "{{ route('celdas.store') }}");  // Revertir a la URL de creación
         $('input[name="_method"]').remove();  // Eliminar el método PUT si estaba presente
         $('#addCeldaModalLabel').text('Agregar Celda');
+    });
+
+
+    $(document).on('click', '.viewPresosBtn', function () {
+        let celdaId = $(this).data('id');
+        
+        $.get(`/celdas/${celdaId}/presos`, function (presos) {
+            let presosTableBody = $('#presosTableBody');
+            presosTableBody.empty();  // Limpiar la tabla antes de cargar nuevos datos
+
+            if (presos.length > 0) {
+                presos.forEach(preso => {
+                    presosTableBody.append(`
+                        <tr>
+                            <td>${preso.id_preso}</td>
+                            <td>${preso.nombre}</td>
+                            <td>${preso.apellido}</td>
+                            <td>${preso.fechaIngreso}</td>
+                        </tr>
+                    `);
+                });
+            } else {
+                presosTableBody.append(`
+                    <tr>
+                        <td colspan="4">No hay presos asignados a esta celda.</td>
+                    </tr>
+                `);
+            }
+        }).fail(function(response) {
+            console.log("Error al obtener los presos:", response);  // Manejar errores
+        });
     });
 });
 

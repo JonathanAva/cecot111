@@ -16,9 +16,6 @@
           <a class="nav-link" href="#" style="font-size: 1.2rem;">Gestionar Expediente</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" style="font-size: 1.2rem;">Ver Planilla</a>
-        </li>
-        <li class="nav-item">
           <form action="{{ route('logout') }}" method="POST" class="d-inline">
             @csrf
             <button type="submit" class="nav-link btn btn-link" style="color: white; font-size: 1.2rem;">Cerrar sesión</button>
