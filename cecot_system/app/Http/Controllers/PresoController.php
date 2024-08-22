@@ -76,7 +76,7 @@ public function update(Request $request, $id)
             'date',
             'before_or_equal:' . now()->subYears(18)->format('Y-m-d'),
         ],
-        'numeroIdentificacion' => 'required|string|max:255|unique:presos,numeroIdentificacion,' . $preso->id_preso,
+        'numeroIdentificacion' => 'required|string|max:255|unique:presos,numeroIdentificacion,' . $preso->id_preso . ',id_preso',
         'fechaIngreso' => 'required|date',
         'fechaLiberacion' => 'nullable|date',
         'estado' => 'required|boolean',
@@ -112,4 +112,13 @@ public function update(Request $request, $id)
         // Retornar la respuesta de éxito
         return response()->json(['success' => 'Preso eliminado con éxito.']);
     }
+    public function edit($id)
+    {
+        // Busca el preso por su ID, si no lo encuentra lanza un error 404
+        $preso = Preso::findOrFail($id);
+
+        // Retorna los datos del preso en formato JSON para ser usados en la vista
+        return response()->json($preso);
+    }
+
 }

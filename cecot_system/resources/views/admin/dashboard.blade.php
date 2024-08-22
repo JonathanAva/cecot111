@@ -84,7 +84,7 @@
                     </div>
                 </a>
 
-                <a href="#" class="card mb-3 text-decoration-none" style="height: 200px;">
+                <a href="{{ route('empleados.index') }}" class="card mb-3 text-decoration-none" style="height: 200px;">
                     <div class="row g-0 h-100">
                         <div class="col-md-4 bg-custom d-flex align-items-center justify-content-center">
                             <img src="{{ asset('images/gestionarEmpleado.png') }}" class="img-fluid icon" alt="Gestionar Celdas">
@@ -97,6 +97,7 @@
                         </div>
                     </div>
                 </a>
+                
                 
             </div>
         </div>

@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="col-md-6 text-end">
-                <!-- Botón para abrir el modal de agregar preso -->
+                
                 <button class="btn btn-primary" style="background-color: #00ADB5;" data-toggle="modal" data-target="#addPresoModal">
                     Agregar Preso
                 </button>
@@ -322,7 +322,7 @@
             }
         });
 
-        // Manejar la edición de presos (rellena el formulario con los datos existentes)
+        
         $(document).on('click', '.editPresoBtn', function () {
             let id = $(this).data('id');
 
@@ -343,7 +343,7 @@
             });
         });
 
-        // Limpiar el formulario cuando se cierra el modal
+      
         $('#addPresoModal').on('hidden.bs.modal', function () {
             $('#presoForm')[0].reset();
             $('#presoId').val('');
