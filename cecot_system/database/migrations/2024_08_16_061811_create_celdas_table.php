@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('celdas', function (Blueprint $table) {
-            $table->id('id_celda');  // Llave primaria
+            $table->unsignedBigInteger('id_celda')->nullable()->change();
             $table->integer('numeroCelda')->unique();  // Número de la celda único
             $table->boolean('estado');  // Estado de la celda (activo/inactivo)
             $table->integer('capacidad');  // Capacidad máxima de la celda

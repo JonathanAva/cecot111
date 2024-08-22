@@ -16,7 +16,6 @@
                 </div>
             </div>
             <div class="col-md-6 text-end">
-                <!-- Botón para abrir el modal -->
                 <button class="btn btn-primary" style="background-color: #00ADB5;" data-toggle="modal" data-target="#addCeldaModal">
                     Agregar
                 </button>
@@ -59,10 +58,9 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="mt-5 mb-5">
-        <h4 class="text-center">Presos en la celda seleccionada</h4>
-        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+
+        <!-- Tabla de presos -->
+        <div class="table-responsive mt-4" style="max-height: 400px; overflow-y: auto;">
             <table class="table table-striped table-bordered text-center">
                 <thead class="thead-dark">
                     <tr>
@@ -70,6 +68,7 @@
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
                         <th scope="col">Fecha de Ingreso</th>
+                        <th scope="col">Acción</th>
                     </tr>
                 </thead>
                 <tbody id="presosTableBody">
@@ -78,8 +77,6 @@
             </table>
         </div>
     </div>
-    
-    
 
     <!-- Modal para agregar/editar celdas -->
     <div class="modal fade" id="addCeldaModal" tabindex="-1" role="dialog" aria-labelledby="addCeldaModalLabel" aria-hidden="true">
@@ -167,17 +164,16 @@ $(document).ready(function () {
                             <td>${response.numeroDePresos || 0}</td>
                             <td>${response.estado ? 'Activo' : 'Inactivo'}</td>
                             <td>
-                                <button class="btn btn-sm btn-info me-2 viewPresosBtn" data-id="{{ $celda->id_celda }}">
+                                <button class="btn btn-sm btn-info me-2 viewPresosBtn" data-id="${response.id_celda}">
                                     Ver presos
                                 </button>
-                                <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="{{ $celda->id_celda }}">
+                                <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="${response.id_celda}">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
-                                <button class="btn btn-sm btn-dark editCeldaBtn" data-id="{{ $celda->id_celda }}">
+                                <button class="btn btn-sm btn-dark editCeldaBtn" data-id="${response.id_celda}">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </td>
-
                         </tr>
                     `);
                 } else {
@@ -189,17 +185,15 @@ $(document).ready(function () {
                         <td>${response.numeroDePresos || 0}</td>
                         <td>${response.estado ? 'Activo' : 'Inactivo'}</td>
                         <td>
-                            <button class="btn btn-sm btn-info me-2 viewPresosBtn" data-id="{{ $celda->id_celda }}">
+                            <button class="btn btn-sm btn-info me-2 viewPresosBtn" data-id="${response.id_celda}">
                                 Ver presos
                             </button>
-                            <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="{{ $celda->id_celda }}">
+                            <button class="btn btn-sm btn-danger me-2 deleteCeldaBtn" data-id="${response.id_celda}">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
-                            <button class="btn btn-sm btn-dark editCeldaBtn" data-id="{{ $celda->id_celda }}">
+                            <button class="btn btn-sm btn-dark editCeldaBtn" data-id="${response.id_celda}">
                                 <i class="fas fa-edit"></i>
-                            </button>
-                        </td>
-
+                            </td>
                     `);
                 }
 
@@ -263,38 +257,68 @@ $(document).ready(function () {
         $('#addCeldaModalLabel').text('Agregar Celda');
     });
 
+    // Ver los presos de una celda
+// Ver los presos de una celda
+$(document).on('click', '.viewPresosBtn', function () {
+    let celdaId = $(this).data('id');
+    
+    $.get(`/celdas/${celdaId}/presos`, function (presos) {
+        let presosTableBody = $('#presosTableBody');
+        presosTableBody.empty();  // Limpiar la tabla antes de cargar nuevos datos
 
-    $(document).on('click', '.viewPresosBtn', function () {
-        let celdaId = $(this).data('id');
-        
-        $.get(`/celdas/${celdaId}/presos`, function (presos) {
-            let presosTableBody = $('#presosTableBody');
-            presosTableBody.empty();  // Limpiar la tabla antes de cargar nuevos datos
-
-            if (presos.length > 0) {
-                presos.forEach(preso => {
-                    presosTableBody.append(`
-                        <tr>
-                            <td>${preso.id_preso}</td>
-                            <td>${preso.nombre}</td>
-                            <td>${preso.apellido}</td>
-                            <td>${preso.fechaIngreso}</td>
-                        </tr>
-                    `);
-                });
-            } else {
+        if (presos.length > 0) {
+            presos.forEach(preso => {
                 presosTableBody.append(`
                     <tr>
-                        <td colspan="4">No hay presos asignados a esta celda.</td>
+                        <td>${preso.id_preso}</td>
+                        <td>${preso.nombre}</td>
+                        <td>${preso.apellido}</td>
+                        <td>${preso.fechaIngreso}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning retirarPresoBtn" data-id="${preso.id_preso}" data-celda-id="${celdaId}">
+                                Retirar preso
+                            </button>
+                        </td>
                     </tr>
                 `);
-            }
-        }).fail(function(response) {
-            console.log("Error al obtener los presos:", response);  // Manejar errores
-        });
+            });
+        } else {
+            presosTableBody.append(`
+                <tr>
+                    <td colspan="5">No hay presos asignados a esta celda.</td>
+                </tr>
+            `);
+        }
+    }).fail(function(response) {
+        console.log("Error al obtener los presos:", response);  // Manejar errores
     });
 });
 
+
+    // Manejar la retirada de presos de una celda
+    $(document).on('click', '.retirarPresoBtn', function () {
+    let presoId = $(this).data('id');
+    let celdaId = $(this).data('celda-id'); // Cambiado de data-id-celda a data-celda-id
+
+    if (confirm('¿Estás seguro de que deseas retirar a este preso de la celda?')) {
+        $.ajax({
+            url: `/celdas/${celdaId}/presos/${presoId}`,
+            type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            success: function () {
+                // Eliminar la fila del preso en la tabla
+                $(`button[data-id='${presoId}']`).closest('tr').remove();
+            },
+            error: function (response) {
+                console.log("Error al retirar al preso:", response);  // Manejar errores
+            }
+        });
+    }
+});
+
+});
 
 </script>
 @endsection

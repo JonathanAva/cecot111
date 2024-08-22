@@ -12,7 +12,9 @@ class CeldaController extends Controller
 {
     public function index()
     {
+        
         $celdas = Celda::all();
+        $celdas = Celda::with('presos')->get();
         return view('celdas.index', compact('celdas'));
     }
 
@@ -84,5 +86,57 @@ class CeldaController extends Controller
         $presos = Preso::where('id_celda', $id)->get();
         return response()->json($presos);
     }
+    public function retirarPreso($celdaId, $presoId)
+    {
+        // Verifica que el preso esté asignado a la celda usando la columna id_celda
+        $presoEnCelda = Preso::where('id_preso', $presoId)
+                            ->where('id_celda', $celdaId)
+                            ->first();
+    
+        if (!$presoEnCelda) {
+            return response()->json(['error' => 'El preso no está asignado a esta celda.'], 400);
+        }
+    
+        // Mueve el preso a la celda inactiva (id = 17)
+        $presoEnCelda->id_celda = 17;
+        $presoEnCelda->save();
+    
+        // Decrementa el número de presos en la celda original solo si es mayor que 0
+        $celda = Celda::find($celdaId);
+        if ($celda->numeroDePresos > 0) {
+            $celda->decrement('numeroDePresos');
+        }
+    
+        return response()->json(['success' => 'Preso movido a la celda inactiva.']);
+    }
+    
+    public function asignarNuevaCelda(Request $request, $presoId)
+    {
+        // Encuentra al preso por ID
+        $preso = Preso::findOrFail($presoId);
+    
+        // Obtén la nueva celda desde la solicitud
+        $nuevaCeldaId = $request->input('id_celda');
+    
+        // Si el preso ya tiene una celda asignada, decrementa el número de presos en esa celda
+        if ($preso->id_celda) {
+            $celdaAnterior = Celda::find($preso->id_celda);
+            if ($celdaAnterior->numeroDePresos > 0) {
+                $celdaAnterior->decrement('numeroDePresos');
+            }
+        }
+    
+        // Asigna la nueva celda al preso
+        $preso->id_celda = $nuevaCeldaId;
+        $preso->save();
+    
+        // Incrementa el número de presos en la nueva celda
+        $nuevaCelda = Celda::find($nuevaCeldaId);
+        $nuevaCelda->increment('numeroDePresos');
+    
+        return response()->json(['success' => 'Preso asignado a la nueva celda.']);
+    }
+    
+    
 
 }

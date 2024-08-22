@@ -27,6 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/presos/{id}/delitos', [PresoController::class, 'getDelitos'])->name('presos.getDelitos');
     Route::get('/presos/{id}/edit', [PresoController::class, 'edit'])->name('presos.edit');
     Route::get('/celdas/{id}/presos', [CeldaController::class, 'getPresosByCelda']);
+    Route::delete('/celdas/{celda}/presos/{preso}', [CeldaController::class, 'retirarPreso'])->name('celdas.retirarPreso');
+
 
 
 
