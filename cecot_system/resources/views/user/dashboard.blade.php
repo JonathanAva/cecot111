@@ -29,10 +29,10 @@
 
            
             <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
-                <a href="#" class="card mb-3 text-decoration-none" style="height: 200px;">
+                <a href="{{ route('planillas.index') }}" class="card mb-3 text-decoration-none" style="height: 200px;">
                     <div class="row g-0 h-100">
                         <div class="col-md-4 bg-custom d-flex align-items-center justify-content-center">
-                            <img src="{{ asset('images/ver_planillas.png') }}" class="img-fluid icon" alt="Gestionar Presos">
+                            <img src="{{ asset('images/ver_planillas.png') }}" class="img-fluid icon" alt="Gestionar Planillas">
                         </div>
                         <div class="col-md-8 d-flex align-items-center">
                             <div class="card-body text-dark">
@@ -42,6 +42,7 @@
                         </div>
                     </div>
                 </a>
+                
 
                
 

@@ -13,17 +13,15 @@ return new class extends Migration
     {
         Schema::create('planillas', function (Blueprint $table) {
             $table->id('id_planilla');
-            $table->unsignedBigInteger('id_empleado');
-            $table->foreign('id_empleado')->references('id_usuario')->on('usuarios')->onDelete('cascade');
-        
+            $table->unsignedBigInteger('id_usuario'); // Cambiar id_empleado a id_usuario
+            $table->foreign('id_usuario')->references('id_usuario')->on('usuarios')->onDelete('cascade'); // Cambiar clave foránea
+
             $table->string('turnos_Asignados');
             $table->date('fechas_turno');
             $table->text('actividades_asignadas');
             
             $table->timestamps();
         });
-        
-        
     }
 
     /**

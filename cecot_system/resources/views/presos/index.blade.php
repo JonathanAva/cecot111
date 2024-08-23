@@ -108,7 +108,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                    <label for="fechaN                            acimiento" class="form-label">Fecha de Nacimiento</label>
                                     <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required>
                                 </div>
                                 <div class="col-md-6 mb-3">

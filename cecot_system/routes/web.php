@@ -8,6 +8,7 @@ use App\Http\Controllers\PresoController;
 use App\Http\Controllers\DelitoController;
 use App\Http\Controllers\PresoDelitoController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\PlanillaController;
 
 // Redirige la raíz al login
 Route::get('/', function () {
@@ -24,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
 
     
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/planillas', [PlanillaController::class, 'index'])->name('planillas.index');
     Route::get('/presos/{id}/delitos', [PresoController::class, 'getDelitos'])->name('presos.getDelitos');
     Route::get('/presos/{id}/edit', [PresoController::class, 'edit'])->name('presos.edit');
     Route::get('/celdas/{id}/presos', [CeldaController::class, 'getPresosByCelda']);
@@ -31,11 +33,15 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-
     // Rutas accesibles solo para administradores
     Route::middleware(['auth'])->group(function () {
         Route::get('/admin', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
         
+        Route::get('/planillas/create', [PlanillaController::class, 'create'])->name('planillas.create');
+        Route::post('/planillas', [PlanillaController::class, 'store'])->name('planillas.store');
+        Route::get('/planillas/{id}/edit', [PlanillaController::class, 'edit'])->name('planillas.edit');
+        Route::put('/planillas/{id}', [PlanillaController::class, 'update'])->name('planillas.update');
+        Route::delete('/planillas/{id}', [PlanillaController::class, 'destroy'])->name('planillas.destroy');
         
         // Protege rutas solo accesibles por administradores en el controlador
         Route::resource('empleados', EmpleadoController::class)->except(['show']);
