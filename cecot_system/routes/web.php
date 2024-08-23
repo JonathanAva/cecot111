@@ -10,6 +10,7 @@ use App\Http\Controllers\PresoDelitoController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\PlanillaController;
 use App\Http\Controllers\VisitaController; 
+use App\Http\Controllers\ReporteController;
 
 // Redirige la raíz al login
 Route::get('/', function () {
@@ -40,6 +41,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/planillas/{id}/edit', [PlanillaController::class, 'edit'])->name('planillas.edit');
         Route::put('/planillas/{id}', [PlanillaController::class, 'update'])->name('planillas.update');
         Route::delete('/planillas/{id}', [PlanillaController::class, 'destroy'])->name('planillas.destroy');
+
+        Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
+        Route::get('/reportes/create', [ReporteController::class, 'create'])->name('reportes.create');
+        Route::post('/reportes', [ReporteController::class, 'store'])->name('reportes.store');
+        Route::get('/reportes/{id}/edit', [ReporteController::class, 'edit'])->name('reportes.edit');
+        Route::put('/reportes/{id}', [ReporteController::class, 'update'])->name('reportes.update');
+        Route::delete('/reportes/{id}', [ReporteController::class, 'destroy'])->name('reportes.destroy');
+        Route::get('/reportes/print/{id}', [ReporteController::class, 'print'])->name('reportes.print');
+
         
         // Rutas de gestión de visitas (solo para administradores)
         Route::get('/visitas', [VisitaController::class, 'index'])->name('visitas.index');
