@@ -24,7 +24,7 @@
     </div>
 
     <table class="table table-bordered table-hover">
-        <thead class="thead-light">
+        <thead class="bg-dark text-white">
             <tr>
                 <th>ID Planilla</th>
                 <th>Empleado</th>

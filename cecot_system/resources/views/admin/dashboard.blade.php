@@ -9,7 +9,7 @@
         <div class="row mt-5">
             
             <div class="col-lg-6 col-md-6 col-sm-12 mb-4">
-                <a href="#" class="card mb-3 text-decoration-none" style="height: 200px;">
+                <a href="{{ route('visitas.index') }}" class="card mb-3 text-decoration-none" style="height: 200px;">
                     <div class="row g-0 h-100">
                         <div class="col-md-4 bg-custom d-flex align-items-center justify-content-center">
                             <img src="{{ asset('images/gestionar_visitas.png') }}" class="img-fluid icon" alt="Gestionar Visitas">
@@ -22,6 +22,7 @@
                         </div>
                     </div>
                 </a>
+                
 
                 <a href="{{ route('presos.index') }}" class="card mb-3 text-decoration-none" style="height: 200px;">
                     <div class="row g-0 h-100">

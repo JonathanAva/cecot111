@@ -15,7 +15,7 @@
         </div>
 
         <table class="table table-bordered">
-            <thead>
+            <thead class="bg-dark text-white">
                 <tr>
                     <th>ID Usuario</th>
                     <th>Nombre</th>
