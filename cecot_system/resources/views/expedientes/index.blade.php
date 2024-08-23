@@ -16,7 +16,7 @@
             <div class="row">
                 @foreach($expedientes as $expediente)
                     <div class="col-12">
-                        <div class="card mb-3" style="width: 100%; transition: transform 0.2s, box-shadow 0.2s;"> <!-- Añade transición suave -->
+                        <div class="card mb-3" style="width: 100%; transition: transform 0.2s, box-shadow 0.2s;"> 
                             <div class="card-body">
                                 <h5 class="card-title">Expediente {{ $expediente->id_expediente }}</h5>
                                 <p class="card-text"><strong>Preso:</strong> {{ $expediente->preso->nombre }} (DUI: {{ $expediente->preso->numeroIdentificacion }})</p>
