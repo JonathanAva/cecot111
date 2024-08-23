@@ -59,7 +59,7 @@
             </table>
         </div>
 
-        <!-- Tabla de presos -->
+      
         <div class="table-responsive mt-4" style="max-height: 400px; overflow-y: auto;">
             <table class="table table-striped table-bordered text-center">
                 <thead class="thead-dark">
@@ -72,13 +72,13 @@
                     </tr>
                 </thead>
                 <tbody id="presosTableBody">
-                    <!-- Los presos se cargarán aquí dinámicamente -->
+                 
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Modal para agregar/editar celdas -->
+  
     <div class="modal fade" id="addCeldaModal" tabindex="-1" role="dialog" aria-labelledby="addCeldaModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -119,7 +119,7 @@
 @section('scripts')
 <script>
 $(document).ready(function () {
-    // Filtro de búsqueda por ID, número de celda o estado
+    
     $('#searchInput').on('input', function () {
         let filter = $(this).val().toLowerCase();
         $('#celdasTableBody tr').filter(function () {
@@ -127,13 +127,13 @@ $(document).ready(function () {
         });
     });
 
-    // Limpiar el filtro
+    
     $('#clearFilter').on('click', function () {
         $('#searchInput').val('');
         $('#celdasTableBody tr').show();
     });
 
-    // Manejar el envío del formulario para agregar/editar una celda
+    
     $('#celdaForm').on('submit', function (e) {
         e.preventDefault();
 
@@ -143,8 +143,8 @@ $(document).ready(function () {
             estado: $('#estado').val(),
         };
 
-        let url = $(this).attr('action');  // Obtén la URL del formulario
-        let method = $(this).find('input[name="_method"]').val() || 'POST';  // Obtén el método (POST o PUT)
+        let url = $(this).attr('action'); 
+        let method = $(this).find('input[name="_method"]').val() || 'POST';  
 
         $.ajax({
             url: url,
@@ -155,7 +155,7 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (method === 'POST') {
-                    // Agregar la nueva celda a la tabla sin recargar la página
+                    
                     $('#celdasTableBody').append(`
                         <tr id="celdaRow${response.id_celda}">
                             <td>${response.id_celda}</td>
@@ -177,7 +177,7 @@ $(document).ready(function () {
                         </tr>
                     `);
                 } else {
-                    // Actualizar la fila de la celda en la tabla sin recargar la página
+                   
                     $(`#celdaRow${response.id_celda}`).html(`
                         <td>${response.id_celda}</td>
                         <td>${response.numeroCelda}</td>
@@ -197,20 +197,20 @@ $(document).ready(function () {
                     `);
                 }
 
-                // Cierra el modal y resetea el formulario
+             
                 $('#addCeldaModal').modal('hide');
                 $('#celdaForm')[0].reset();
-                $('#celdaForm').attr('action', "{{ route('celdas.store') }}");  // Revertir a la URL de creación
-                $('input[name="_method"]').remove();  // Eliminar el método PUT si estaba presente
+                $('#celdaForm').attr('action', "{{ route('celdas.store') }}");  
+                $('input[name="_method"]').remove();  
             },
             error: function (response) {
-                // Manejar errores
+                
                 console.log(response);
             }
         });
     });
 
-    // Manejar la eliminación de celdas
+    
     $(document).on('click', '.deleteCeldaBtn', function () {
         let id = $(this).data('id');
 
@@ -231,40 +231,40 @@ $(document).ready(function () {
         }
     });
 
-    // Manejar la edición de celdas
+    
     $(document).on('click', '.editCeldaBtn', function () {
         let id = $(this).data('id');
 
         $.get(`/celdas/${id}/edit`, function (celda) {
-            console.log(celda);  // Depuración: Verificar que los datos lleguen correctamente
+            console.log(celda);
             $('#numeroCelda').val(celda.numeroCelda);
             $('#capacidad').val(celda.capacidad);
             $('#estado').val(celda.estado);
-            $('#celdaForm').attr('action', `/celdas/${id}`);  // Cambiar la URL para la edición
-            $('#celdaForm').append('<input type="hidden" name="_method" value="PUT">');  // Agregar el método PUT para la edición
+            $('#celdaForm').attr('action', `/celdas/${id}`); 
+            $('#celdaForm').append('<input type="hidden" name="_method" value="PUT">'); 
             $('#addCeldaModalLabel').text('Editar Celda');
             $('#addCeldaModal').modal('show');
         }).fail(function(response) {
-            console.log("Error al obtener la celda:", response);  // Manejar errores de la solicitud AJAX
+            console.log("Error al obtener la celda:", response);  
         });
     });
 
-    // Limpiar el formulario cuando se cierra el modal
+   
     $('#addCeldaModal').on('hidden.bs.modal', function () {
         $('#celdaForm')[0].reset();
-        $('#celdaForm').attr('action', "{{ route('celdas.store') }}");  // Revertir a la URL de creación
-        $('input[name="_method"]').remove();  // Eliminar el método PUT si estaba presente
+        $('#celdaForm').attr('action', "{{ route('celdas.store') }}");  
+        $('input[name="_method"]').remove(); 
         $('#addCeldaModalLabel').text('Agregar Celda');
     });
 
-    // Ver los presos de una celda
-// Ver los presos de una celda
+   
+
 $(document).on('click', '.viewPresosBtn', function () {
     let celdaId = $(this).data('id');
     
     $.get(`/celdas/${celdaId}/presos`, function (presos) {
         let presosTableBody = $('#presosTableBody');
-        presosTableBody.empty();  // Limpiar la tabla antes de cargar nuevos datos
+        presosTableBody.empty();  
 
         if (presos.length > 0) {
             presos.forEach(preso => {
@@ -290,15 +290,15 @@ $(document).on('click', '.viewPresosBtn', function () {
             `);
         }
     }).fail(function(response) {
-        console.log("Error al obtener los presos:", response);  // Manejar errores
+        console.log("Error al obtener los presos:", response);  
     });
 });
 
 
-    // Manejar la retirada de presos de una celda
+   
     $(document).on('click', '.retirarPresoBtn', function () {
     let presoId = $(this).data('id');
-    let celdaId = $(this).data('celda-id'); // Cambiado de data-id-celda a data-celda-id
+    let celdaId = $(this).data('celda-id');
 
     if (confirm('¿Estás seguro de que deseas retirar a este preso de la celda?')) {
         $.ajax({
@@ -308,11 +308,11 @@ $(document).on('click', '.viewPresosBtn', function () {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
             success: function () {
-                // Eliminar la fila del preso en la tabla
+                
                 $(`button[data-id='${presoId}']`).closest('tr').remove();
             },
             error: function (response) {
-                console.log("Error al retirar al preso:", response);  // Manejar errores
+                console.log("Error al retirar al preso:", response);  
             }
         });
     }

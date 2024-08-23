@@ -25,7 +25,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    // Método accesor para obtener el rol del usuario
+    
     public function getRoleAttribute()
     {
         return $this->attributes['rol'];

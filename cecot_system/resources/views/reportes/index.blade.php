@@ -17,7 +17,7 @@
                         <th>Tipo</th>
                         <th>Fecha</th>
                         <th>Hora</th>
-                        <th style="max-width: 150px;">Descripción</th> <!-- Limitar el ancho de la columna -->
+                        <th style="max-width: 150px;">Descripción</th> 
                         <th>ID Preso</th>
                         <th>Acción</th>
                     </tr>
@@ -30,7 +30,7 @@
                             <td>{{ $reporte->tipo_reporte }}</td>
                             <td>{{ \Carbon\Carbon::parse($reporte->fecha_reporte)->format('d/m/Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($reporte->hora_reporte)->format('H:i') }}</td>
-                            <td class="text-truncate" style="max-width: 150px;">{{ $reporte->descripcion }}</td> <!-- Aplicar truncamiento de texto -->
+                            <td class="text-truncate" style="max-width: 150px;">{{ $reporte->descripcion }}</td> 
                             <td>{{ $reporte->preso->id_preso }}</td>
                             <td>
                                 <a href="{{ route('reportes.edit', $reporte->id_reporte) }}" class="btn btn-warning btn-sm">

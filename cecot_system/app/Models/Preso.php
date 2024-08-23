@@ -20,12 +20,12 @@ class Preso extends Model
         'id_celda',
     ];
 
-    // Relación con Celda
+   
     public function celda()
     {
         return $this->belongsTo(Celda::class, 'id_celda');
     }
-// Modelo Preso.php
+
     public function delitos()
     {
         return $this->belongsToMany(Delito::class, 'preso_delito', 'id_preso', 'id_delito');

@@ -11,8 +11,8 @@ class DelitoController extends Controller
     public function index()
     {
         $delitos = Delito::all();
-        $presos = Preso::all(); // Obtener todos los presos
-        return view('delitos.index', compact('delitos', 'presos')); // Pasar la lista de presos a la vista
+        $presos = Preso::all(); 
+        return view('delitos.index', compact('delitos', 'presos'));
     }
     
 
@@ -22,16 +22,16 @@ class DelitoController extends Controller
             'descripcion' => 'required|string|max:255',
         ]);
     
-        // Crear el delito y devolverlo
+       
         $delito = Delito::create($validatedData);
     
-        return response()->json($delito); // Asegúrate de devolver el delito como JSON
+        return response()->json($delito);
     }
     
 
     public function edit(Delito $delito)
     {
-        return response()->json($delito); // Retornar los datos del delito en formato JSON para usar en el frontend
+        return response()->json($delito); 
     }
 
     public function update(Request $request, Delito $delito)
@@ -48,7 +48,6 @@ class DelitoController extends Controller
     {
         $delito->delete();
         
-        // Retornar una respuesta JSON en lugar de redirigir
         return response()->json(['message' => 'Delito eliminado exitosamente.']);
     }
     

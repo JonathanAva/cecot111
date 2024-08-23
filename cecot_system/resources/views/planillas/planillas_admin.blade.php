@@ -38,7 +38,7 @@
             @foreach ($planillas as $planilla)
                 <tr>
                     <td>{{ $planilla->id_planilla }}</td>
-                    <td>{{ $planilla->usuario->nombre_usuario }}</td> <!-- Aquí accedes al nombre del usuario a través de la relación -->
+                    <td>{{ $planilla->usuario->nombre_usuario }}</td> 
                     <td>{{ $planilla->turnos_Asignados }}</td>
                     <td>{{ $planilla->fechas_turno }}</td>
                     <td>{{ $planilla->actividades_asignadas }}</td>

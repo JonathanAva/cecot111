@@ -63,7 +63,7 @@
             </table>
         </div>
 
-        <!-- Tabla para mostrar los delitos del preso seleccionado -->
+      
         <div class="mt-5 mb-5">
             <h3 class="text-center">Delitos por Preso</h3>
             <div class="table-responsive">
@@ -75,14 +75,14 @@
                         </tr>
                     </thead>
                     <tbody id="delitosTableBody">
-                        <!-- Los delitos se cargarán aquí cuando se seleccione un preso -->
+                       
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Modal para agregar/editar preso -->
+   
     <div class="modal fade" id="addPresoModal" tabindex="-1" role="dialog" aria-labelledby="addPresoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
@@ -163,7 +163,7 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
-        // Filtro de búsqueda por nombre o DUI
+       
         $('#searchInput').on('input', function () {
             let filter = $(this).val().toLowerCase();
             $('#presosTableBody tr').filter(function () {
@@ -171,25 +171,25 @@
             });
         });
 
-        // Limpiar el filtro
+       
         $('#clearFilter').on('click', function () {
             $('#searchInput').val('');
             $('#presosTableBody tr').show();
         });
 
-        // Manejar la selección de un preso para ver sus delitos
+        
         $(document).on('click', '.viewDelitosBtn', function () {
             let presoId = $(this).data('id');
 
-            // Realizar una solicitud AJAX para obtener los delitos del preso seleccionado
+            
             $.ajax({
                 url: `/presos/${presoId}/delitos`,
                 type: 'GET',
                 success: function (response) {
-                    // Limpiar la tabla de delitos
+                    
                     $('#delitosTableBody').empty();
 
-                    // Llenar la tabla con los delitos recibidos
+                    
                     if (response.delitos && response.delitos.length > 0) {
                         response.delitos.forEach(function (delito) {
                             $('#delitosTableBody').append(`
@@ -213,7 +213,7 @@
             });
         });
 
-        // Manejar el envío del formulario para agregar o editar un preso
+      
         $('#presoForm').on('submit', function (e) {
             e.preventDefault();
 
@@ -242,7 +242,6 @@
                 },
                 success: function (response) {
                     if (method === 'POST') {
-                        // Agregar el nuevo preso a la tabla sin recargar la página
                         $('#presosTableBody').append(`
                             <tr id="presoRow${response.id_preso}" data-id="${response.id_preso}">
                                 <td>${response.id_preso}</td>
@@ -265,7 +264,7 @@
                             </tr>
                         `);
                     } else {
-                        // Actualizar la fila del preso en la tabla sin recargar la página
+                        
                         $(`#presoRow${response.id_preso}`).html(`
                             <td>${response.id_preso}</td>
                             <td>${response.numeroIdentificacion}</td>  <!-- DUI -->
@@ -287,19 +286,18 @@
                         `);
                     }
 
-                    // Cierra el modal y resetea el formulario
+                   
                     $('#addPresoModal').modal('hide');
                     $('#presoForm')[0].reset();
                     $('#presoId').val('');
                 },
                 error: function (response) {
-                    // Manejar errores
+                    
                     console.log(response);
                 }
             });
         });
 
-        // Manejar la eliminación de presos
         $(document).on('click', '.deletePresoBtn', function () {
             let id = $(this).data('id');
 
@@ -312,7 +310,7 @@
                     },
                     success: function () {
                         $(`#presoRow${id}`).remove();
-                        // Limpiar la tabla de delitos si el preso eliminado estaba seleccionado
+                      
                         $('#delitosTableBody').empty();
                     },
                     error: function (response) {

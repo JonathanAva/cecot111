@@ -9,14 +9,14 @@ use Illuminate\Http\Request;
 
 class ReporteController extends Controller
 {
-    // Mostrar todos los reportes
+    
     public function index()
     {
         $reportes = Reporte::with('usuario', 'preso')->get();
         return view('reportes.index', compact('reportes'));
     }
 
-    // Mostrar el formulario para crear un nuevo reporte
+   
     public function create()
     {
         $usuarios = User::all();
@@ -24,7 +24,7 @@ class ReporteController extends Controller
         return view('reportes.create', compact('usuarios', 'presos'));
     }
 
-    // Almacenar un nuevo reporte
+ 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -32,7 +32,7 @@ class ReporteController extends Controller
             'id_preso' => 'required|exists:presos,id_preso',
             'tipo_reporte' => 'required|string|max:255',
             'fecha_reporte' => 'required|date',
-            'hora_reporte' => 'required|date_format:H:i', // Cambia aquí
+            'hora_reporte' => 'required|date_format:H:i', 
             'descripcion' => 'required|string|max:1000',
         ]);
         
@@ -76,7 +76,7 @@ class ReporteController extends Controller
         return redirect()->route('reportes.index')->with('success', 'Reporte actualizado correctamente.');
     }
     
-    // Eliminar un reporte
+  
     public function destroy($id)
     {
         $reporte = Reporte::findOrFail($id);

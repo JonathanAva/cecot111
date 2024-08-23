@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('preso_delito', function (Blueprint $table) {
-            $table->id();  // Clave primaria para la tabla intermedia
+            $table->id();  
             $table->unsignedBigInteger('id_preso');
             $table->unsignedBigInteger('id_delito');
             $table->foreign('id_preso')->references('id_preso')->on('presos')->onDelete('cascade');

@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 
 class ExpedienteController extends Controller
 {
-    // Mostrar todos los expedientes
+    
     public function index(Request $request)
     {
         $expedientes = Expediente::with('preso')->get();
 
-        // Si se busca un expediente por ID
+        
         if ($request->has('id_expediente')) {
             $expedientes = Expediente::where('id_expediente', $request->id_expediente)
                             ->with('preso')
@@ -23,14 +23,14 @@ class ExpedienteController extends Controller
         return view('expedientes.index', compact('expedientes'));
     }
 
-    // Mostrar el formulario para crear un nuevo expediente
+   
     public function create()
     {
         $presos = Preso::all();
         return view('expedientes.create', compact('presos'));
     }
 
-    // Almacenar un nuevo expediente
+   
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -46,13 +46,13 @@ class ExpedienteController extends Controller
 
     public function show($id)
     {
-        // Aquí asegúrate de usar la columna correcta para buscar el expediente
+      
         $expediente = Expediente::findOrFail($id);
         return view('expedientes.show', compact('expediente'));
     }
     
 
-    // Mostrar el formulario para editar un expediente
+  
     public function edit($id)
     {
         $expediente = Expediente::findOrFail($id);
@@ -60,7 +60,7 @@ class ExpedienteController extends Controller
         return view('expedientes.edit', compact('expediente', 'presos'));
     }
 
-    // Actualizar un expediente existente
+   
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
@@ -75,7 +75,7 @@ class ExpedienteController extends Controller
         return redirect()->route('expedientes.index')->with('success', 'Expediente actualizado correctamente.');
     }
 
-    // Eliminar un expediente
+    
     public function destroy($id)
     {
         $expediente = Expediente::findOrFail($id);

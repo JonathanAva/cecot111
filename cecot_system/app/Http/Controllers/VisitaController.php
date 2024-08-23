@@ -36,7 +36,7 @@ class VisitaController extends Controller
 
     public function store(Request $request)
     {
-        // Validar los datos ingresados
+       
         $request->validate([
             'nombre' => 'required|string|max:255',
             'parentesco' => 'required|string|max:255',
@@ -65,7 +65,7 @@ class VisitaController extends Controller
             'id_preso' => $request->id_preso,
         ]);
     
-        // Redirigir a la vista principal con un mensaje de éxito
+       
         return redirect()->route('visitas.index')->with('success', 'Visita registrada exitosamente.');
     }
     

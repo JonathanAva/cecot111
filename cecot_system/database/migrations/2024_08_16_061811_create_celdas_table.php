@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('celdas', function (Blueprint $table) {
             $table->unsignedBigInteger('id_celda')->nullable()->change();
-            $table->integer('numeroCelda')->unique();  // Número de la celda único
-            $table->boolean('estado');  // Estado de la celda (activo/inactivo)
-            $table->integer('capacidad');  // Capacidad máxima de la celda
-            $table->integer('numeroDePresos')->default(0);  // Número actual de presos, por defecto 0
-            $table->timestamps();  // Timestamps de creación y actualización
+            $table->integer('numeroCelda')->unique();  
+            $table->boolean('estado');  
+            $table->integer('capacidad');  
+            $table->integer('numeroDePresos')->default(0);  
+            $table->timestamps();  
         });
     }
 

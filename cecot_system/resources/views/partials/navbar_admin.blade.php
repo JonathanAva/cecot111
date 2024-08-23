@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #222831; padding: 1rem;">
   <div class="container-fluid">
-    <!-- Enlace al dashboard genérico -->
+   
     <a class="navbar-brand" href="{{ route('dashboard') }}" style="font-size: 1.5rem;">CECOT</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

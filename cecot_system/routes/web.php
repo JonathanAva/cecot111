@@ -13,17 +13,16 @@ use App\Http\Controllers\VisitaController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\ExpedienteController;
 
-// Redirige la raíz al login
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// Rutas de autenticación
+
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
@@ -33,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/celdas/{id}/presos', [CeldaController::class, 'getPresosByCelda']);
     Route::delete('/celdas/{celda}/presos/{preso}', [CeldaController::class, 'retirarPreso'])->name('celdas.retirarPreso');
 
-    // Rutas accesibles solo para administradores
+    
     Route::middleware(['auth'])->group(function () {
         Route::get('/admin', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
         
@@ -61,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/expedientes/print/{id_expediente}', [ExpedienteController::class, 'print'])->name('expedientes.print');
 
         
-        // Rutas de gestión de visitas (solo para administradores)
+        
         Route::get('/visitas', [VisitaController::class, 'index'])->name('visitas.index');
         Route::get('/visitas/create', [VisitaController::class, 'create'])->name('visitas.create');
         Route::post('/visitas', [VisitaController::class, 'store'])->name('visitas.store');
@@ -69,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/visitas/{id}', [VisitaController::class, 'update'])->name('visitas.update');
         Route::delete('/visitas/{id}', [VisitaController::class, 'destroy'])->name('visitas.destroy');
 
-        // Protege rutas solo accesibles por administradores en el controlador
+        
         Route::resource('empleados', EmpleadoController::class)->except(['show']);
         Route::resource('celdas', CeldaController::class)->except(['show']);
         Route::resource('presos', PresoController::class)->except(['show']);
@@ -77,9 +76,9 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('preso_delito', PresoDelitoController::class)->only(['store', 'destroy']);
     });
 
-    // Rutas accesibles solo para usuarios normales
+    
     Route::get('/user', [UserController::class, 'userDashboard'])->name('user.dashboard');
 
-    // Ruta genérica para todos los usuarios autenticados
+   
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 });

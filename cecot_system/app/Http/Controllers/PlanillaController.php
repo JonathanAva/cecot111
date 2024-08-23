@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 
 class PlanillaController extends Controller
 {
-    // Mostrar todas las planillas (accesible por ambos roles)
+    
+
     public function index()
     {
-        $planillas = Planilla::all(); // Obtener todas las planillas
+        $planillas = Planilla::all(); 
         
         if (auth()->user()->rol === 'admin') {
             return view('planillas.planillas_admin', compact('planillas'));
@@ -22,37 +23,36 @@ class PlanillaController extends Controller
         }
     }
 
-    // Mostrar el formulario para crear una nueva planilla (solo admin)
+   
     public function create()
     {
         if (auth()->user()->rol !== 'admin') {
             return redirect()->route('planillas.index');
         }
 
-        // Obtener todos los empleados (usuarios)
+      
         $empleados = User::all();
 
         return view('planillas.create', compact('empleados'));
     }
 
-    // Guardar una nueva planilla (solo admin)
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'id_usuario' => 'required|exists:usuarios,id_usuario', // Cambiado a 'usuarios'
+            'id_usuario' => 'required|exists:usuarios,id_usuario', 
             'turnos_Asignados' => 'required|string|max:255',
             'fechas_turno' => 'required|date',
             'actividades_asignadas' => 'required|string|max:255',
         ]);
     
-        // Crear la nueva planilla con los datos validados
+       
         Planilla::create($validatedData);
     
         return redirect()->route('planillas.index')->with('success', 'Planilla creada exitosamente.');
     }
     
 
-    // Editar una planilla existente (solo admin)
     public function edit($id)
     {
         $planilla = Planilla::findOrFail($id);
@@ -61,11 +61,11 @@ class PlanillaController extends Controller
         return view('planillas.edit', compact('planilla', 'empleados')); 
     }
 
-    // Actualizar una planilla existente (solo admin)
+
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'id_usuario' => 'required|exists:usuarios,id_usuario', // Asegúrate de que la columna coincida
+            'id_usuario' => 'required|exists:usuarios,id_usuario',
             'turnos_asignados' => 'required|string',
             'fechas_turno' => 'required|date',
             'actividades_asignadas' => 'required|string',
@@ -77,7 +77,7 @@ class PlanillaController extends Controller
         return redirect()->route('planillas.index')->with('success', 'Planilla actualizada correctamente.');
     }
 
-    // Eliminar una planilla (solo admin)
+   
     public function destroy($id)
     {
         if (auth()->user()->rol !== 'admin') {

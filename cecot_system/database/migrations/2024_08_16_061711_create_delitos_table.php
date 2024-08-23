@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('delitos', function (Blueprint $table) {
-            $table->id('id_delito');  // Clave primaria de tipo bigint (por defecto)
+            $table->id('id_delito');  
             $table->text('descripcion');
             $table->timestamps();
         });

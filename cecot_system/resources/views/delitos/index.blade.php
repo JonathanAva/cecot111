@@ -48,7 +48,6 @@
         </div>
     </div>
 
- <!-- Modal para asignar delito a preso -->
 <div class="modal fade" id="asignarDelitoModal" tabindex="-1" role="dialog" aria-labelledby="asignarDelitoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -92,7 +91,7 @@
 @section('scripts')
 <script>
 $(document).ready(function () {
-    // Manejar el envío del formulario para agregar delito
+    
     $('#agregarDelitoBtn').on('click', function () {
         let descripcion = $('#descripcionDelito').val().trim();
 
@@ -107,7 +106,7 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function (response) {
-                    // Agregar el nuevo delito a la tabla y al select del modal
+                   
                     $('#delitosTableBody').append(`
                         <tr id="delitoRow${response.id_delito}">
                             <td>${response.id_delito}</td>
@@ -136,20 +135,20 @@ $(document).ready(function () {
         }
     });
 
-    // Manejar la edición de delitos
+
     $(document).on('click', '.editDelitoBtn', function () {
         let id = $(this).data('id');
 
-        // Obtener datos del delito a editar
+       
         $.ajax({
             url: `/delitos/${id}/edit`,
             type: "GET",
             success: function (response) {
-                // Mostrar datos en el formulario de edición
+               
                 $('#descripcionDelito').val(response.descripcion);
-                $('#agregarDelitoBtn').hide(); // Ocultar botón de agregar
-                $('#updateDelitoBtn').show().data('id', id); // Mostrar botón de actualizar con el ID
-                $('#cancelUpdateBtn').show(); // Mostrar botón de cancelar
+                $('#agregarDelitoBtn').hide(); 
+                $('#updateDelitoBtn').show().data('id', id);
+                $('#cancelUpdateBtn').show(); 
             },
             error: function (response) {
                 console.log('Error al obtener los datos del delito:', response);
@@ -157,7 +156,7 @@ $(document).ready(function () {
         });
     });
 
-    // Manejar la actualización de delitos
+   
     $('#updateDelitoBtn').on('click', function () {
         let id = $(this).data('id');
         let descripcion = $('#descripcionDelito').val().trim();
@@ -173,17 +172,17 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function (response) {
-                    // Actualizar la fila del delito en la tabla sin recargar la página
+                   
                     $(`#delitoRow${id} td:nth-child(2)`).text(response.descripcion);
                     $(`#delitoSelect option[value='${id}']`).text(response.descripcion);
 
-                    // Resetear formulario
+                  
                     $('#descripcionDelito').val('');
-                    $('#agregarDelitoBtn').show(); // Mostrar botón de agregar
-                    $('#updateDelitoBtn').hide(); // Ocultar botón de actualizar
-                    $('#cancelUpdateBtn').hide(); // Ocultar botón de cancelar
+                    $('#agregarDelitoBtn').show(); 
+                    $('#updateDelitoBtn').hide(); 
+                    $('#cancelUpdateBtn').hide(); 
 
-                    // Mensaje opcional de éxito
+                  
                     alert('Delito actualizado exitosamente.');
                 },
                 error: function (response) {
@@ -195,15 +194,15 @@ $(document).ready(function () {
         }
     });
 
-    // Manejar la cancelación de la edición
+    
     $('#cancelUpdateBtn').on('click', function () {
         $('#descripcionDelito').val('');
-        $('#agregarDelitoBtn').show(); // Mostrar botón de agregar
-        $('#updateDelitoBtn').hide(); // Ocultar botón de actualizar
-        $('#cancelUpdateBtn').hide(); // Ocultar botón de cancelar
+        $('#agregarDelitoBtn').show();
+        $('#updateDelitoBtn').hide(); 
+        $('#cancelUpdateBtn').hide(); 
     });
 
-    // Manejar la eliminación de delitos
+   
     $(document).on('click', '.deleteDelitoBtn', function () {
         let id = $(this).data('id');
 
@@ -215,8 +214,8 @@ $(document).ready(function () {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 success: function (response) {
-                    $(`#delitoRow${id}`).remove(); // Eliminar la fila de la tabla
-                    $(`#delitoSelect option[value='${id}']`).remove(); // Eliminar del select del modal
+                    $(`#delitoRow${id}`).remove();
+                    $(`#delitoSelect option[value='${id}']`).remove(); 
                 },
                 error: function (response) {
                     console.log('Error al eliminar el delito:', response);
@@ -225,7 +224,7 @@ $(document).ready(function () {
         }
     });
 
-    // Manejar la asignación de delito a preso
+    
     $('#presoDelitoForm').on('submit', function (e) {
         e.preventDefault();
 

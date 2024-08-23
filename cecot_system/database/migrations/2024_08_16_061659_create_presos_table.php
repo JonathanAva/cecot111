@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('presos', function (Blueprint $table) {
-            $table->id('id_preso');  // Clave primaria de tipo bigint (por defecto)
+            $table->id('id_preso');  
             $table->string('nombre');
             $table->string('apellido');
             $table->date('fechaNacimiento');
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('estado');
             $table->string('condena');
 
-            // Agregar la relación con la tabla celdas
+           
             $table->unsignedBigInteger('id_celda');
             $table->foreign('id_celda')->references('id_celda')->on('celdas')->onDelete('cascade');
 
