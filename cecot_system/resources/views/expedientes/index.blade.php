@@ -37,11 +37,10 @@
         </div>
     </div>
 
-    <style>
-        /* Estilo para reducir el efecto de sobresalir al pasar el cursor */
+    <style>        
         .card:hover {
-            transform: scale(1.02); /* Escala ligeramente */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Reduce el sombreado */
+            transform: scale(1.02); 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
         }
     </style>
 @endsection
