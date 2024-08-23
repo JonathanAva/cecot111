@@ -13,7 +13,7 @@
           <a class="nav-link" href="{{ route('delitos.index') }}" style="font-size: 1.2rem;">Gestionar Delitos</a>
         </li>        
         <li class="nav-item">
-          <a class="nav-link" href="#" style="font-size: 1.2rem;">Gestionar Expediente</a>
+          <a class="nav-link" href="{{ route('expedientes.index') }}" style="font-size: 1.2rem;">Gestionar Expediente</a>
         </li>
         <li class="nav-item">
           <form action="{{ route('logout') }}" method="POST" class="d-inline">

@@ -11,6 +11,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\PlanillaController;
 use App\Http\Controllers\VisitaController; 
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\ExpedienteController;
 
 // Redirige la raíz al login
 Route::get('/', function () {
@@ -49,6 +50,15 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/reportes/{id}', [ReporteController::class, 'update'])->name('reportes.update');
         Route::delete('/reportes/{id}', [ReporteController::class, 'destroy'])->name('reportes.destroy');
         Route::get('/reportes/print/{id}', [ReporteController::class, 'print'])->name('reportes.print');
+
+        Route::get('/expedientes', [ExpedienteController::class, 'index'])->name('expedientes.index');
+        Route::get('/expedientes/create', [ExpedienteController::class, 'create'])->name('expedientes.create');
+        Route::post('/expedientes', [ExpedienteController::class, 'store'])->name('expedientes.store');
+        Route::get('/expedientes/{id_expediente}', [ExpedienteController::class, 'show'])->name('expedientes.show');
+        Route::get('/expedientes/{id_expediente}/edit', [ExpedienteController::class, 'edit'])->name('expedientes.edit');
+        Route::put('/expedientes/{id_expediente}', [ExpedienteController::class, 'update'])->name('expedientes.update');
+        Route::delete('/expedientes/{id_expediente}', [ExpedienteController::class, 'destroy'])->name('expedientes.destroy');
+        Route::get('/expedientes/print/{id_expediente}', [ExpedienteController::class, 'print'])->name('expedientes.print');
 
         
         // Rutas de gestión de visitas (solo para administradores)
