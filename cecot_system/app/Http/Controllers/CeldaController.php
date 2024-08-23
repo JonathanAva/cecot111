@@ -98,7 +98,7 @@ class CeldaController extends Controller
         }
     
         
-        $presoEnCelda->id_celda = 17;
+        $presoEnCelda->id_celda = 18;
         $presoEnCelda->save();
     
        
