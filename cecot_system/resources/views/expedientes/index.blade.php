@@ -12,15 +12,15 @@
             </form>
             <a href="{{ route('expedientes.create') }}" class="btn btn-primary">Agregar</a>
         </div>
-        <div class="scrollable-container" style="max-height: 500px; overflow-y: auto;">
+        <div class="scrollable-container" style="max-height: 500px; overflow-y: auto; overflow-x: hidden;">
             <div class="row">
                 @foreach($expedientes as $expediente)
-                    <div class="col-md-4">
-                        <div class="card mb-3">
+                    <div class="col-12">
+                        <div class="card mb-3" style="width: 100%; transition: transform 0.2s, box-shadow 0.2s;"> <!-- Añade transición suave -->
                             <div class="card-body">
                                 <h5 class="card-title">Expediente {{ $expediente->id_expediente }}</h5>
                                 <p class="card-text"><strong>Preso:</strong> {{ $expediente->preso->nombre }} (DUI: {{ $expediente->preso->numeroIdentificacion }})</p>
-                                <p class="card-text"><strong>Descripción del Caso:</strong> {{ Str::limit($expediente->descripcionDelCaso, 100) }}</p>
+                                <p class="card-text"><strong>Descripción del Caso:</strong> {{ Str::limit($expediente->descripcionDelCaso, 200) }}</p>
                                 <p class="card-text"><strong>Estado del Caso:</strong> {{ $expediente->estadoDelCaso ? 'Activo' : 'Inactivo' }}</p>
                                 <a href="{{ route('expedientes.show', $expediente->id_expediente) }}" class="btn btn-info btn-sm">Ver</a>
                                 <a href="{{ route('expedientes.edit', $expediente->id_expediente) }}" class="btn btn-warning btn-sm">Editar</a>
@@ -36,4 +36,12 @@
             </div>
         </div>
     </div>
+
+    <style>
+        /* Estilo para reducir el efecto de sobresalir al pasar el cursor */
+        .card:hover {
+            transform: scale(1.02); /* Escala ligeramente */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Reduce el sombreado */
+        }
+    </style>
 @endsection
