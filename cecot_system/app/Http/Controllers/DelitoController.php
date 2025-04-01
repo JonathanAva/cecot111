@@ -50,5 +50,14 @@ class DelitoController extends Controller
         
         return response()->json(['message' => 'Delito eliminado exitosamente.']);
     }
+
+    public function getDelitosData()
+{
+    $data = Delito::withCount('presos') // Cuenta los presos asociados a cada delito
+        ->orderBy('presos_count', 'desc') // Ordena por la cantidad de presos
+        ->get(['descripcion', 'presos_count']); // Obtiene solo los campos necesarios
+
+    return response()->json($data);
+}
     
 }

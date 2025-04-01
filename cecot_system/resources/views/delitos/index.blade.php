@@ -46,6 +46,11 @@
                 </tbody>
             </table>
         </div>
+        <!-- Contenedor para la gráfica -->
+<div class="mt-5">
+    <h3 class="text-center">Gráfica de Delitos Más Comunes</h3>
+    <canvas id="delitosChart" width="400" height="200"></canvas>
+</div>
     </div>
 
 <div class="modal fade" id="asignarDelitoModal" tabindex="-1" role="dialog" aria-labelledby="asignarDelitoModalLabel" aria-hidden="true">
@@ -88,7 +93,45 @@
 
 @endsection
 
+
 @section('scripts')
+<script>
+$(document).ready(function () {
+    // Generar la gráfica de delitos más populares
+    fetch("{{ route('delitos.data') }}")
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.descripcion);
+            const values = data.map(item => item.presos_count);
+
+            const ctx = document.getElementById('delitosChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cantidad de Presos',
+                        data: values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar los datos de la gráfica:', error);
+        });
+});
+</script>
 <script>
 $(document).ready(function () {
     
@@ -263,3 +306,5 @@ $(document).ready(function () {
 
 </script>
 @endsection
+
+

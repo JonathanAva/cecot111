@@ -23,6 +23,8 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
@@ -67,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/visitas/{id}/edit', [VisitaController::class, 'edit'])->name('visitas.edit');
         Route::put('/visitas/{id}', [VisitaController::class, 'update'])->name('visitas.update');
         Route::delete('/visitas/{id}', [VisitaController::class, 'destroy'])->name('visitas.destroy');
+        Route::get('/visitas/data', [VisitaController::class, 'getVisitasData'])->name('visitas.data');
 
         
         Route::resource('empleados', EmpleadoController::class)->except(['show']);
@@ -74,6 +77,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('presos', PresoController::class)->except(['show']);
         Route::resource('delitos', DelitoController::class)->except(['show']);
         Route::resource('preso_delito', PresoDelitoController::class)->only(['store', 'destroy']);
+        
+        Route::get('/delitos/data', [DelitoController::class, 'getDelitosData'])->name('delitos.data');
     });
 
     

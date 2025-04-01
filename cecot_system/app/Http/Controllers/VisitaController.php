@@ -100,4 +100,18 @@ class VisitaController extends Controller
 
         return redirect()->route('visitas.index')->with('success', 'Visita eliminada exitosamente.');
     }
+
+    public function getVisitasData()
+    {
+        try {
+            $data = Visita::select(\DB::raw('DATE(fechaDeVisita) as fecha'), \DB::raw('count(*) as total'))
+                ->groupBy('fecha')
+                ->orderBy('fecha', 'asc')
+                ->get();
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

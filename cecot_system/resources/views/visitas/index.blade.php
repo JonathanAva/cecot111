@@ -64,10 +64,56 @@
                 @endforeach
             </tbody>
         </table>
+        <!-- Contenedor para la gráfica de visitas -->
+    <div class="mt-5">
+        <h3 class="text-center">Gráfica de Visitas por Fecha</h3>
+        <canvas id="visitasChart" width="400" height="200"></canvas>
+    </div>
     </div>
 
     <div class="d-flex justify-content-center">
         {{ $visitas->links() }}
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+$(document).ready(function () {
+    // Generar la gráfica de visitas
+    fetch("{{ route('visitas.data') }}")
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.fecha);
+            const values = data.map(item => item.total);
+
+            const ctx = document.getElementById('visitasChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cantidad de Visitas',
+                        data: values,
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1,
+                        tension: 0.4 // Suaviza las líneas
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar los datos de la gráfica:', error);
+        });
+});
+</script>
 @endsection
