@@ -19,7 +19,7 @@
         </div>
         <div class="form-group">
             <label for="fecha_visita">Fecha de Visita</label>
-            <input type="date" class="form-control" id="fecha_visita" name="fecha_visita" value="{{ $visita->fecha_visita }}" required>
+            <input type="date" class="form-control" id="fecha_visita" name="fecha_visita" value="{{ $visita->fecha_visita }}" min="{{ date('Y-m-d') }}" required>
         </div>
         <div class="form-group">
             <label for="hora_visita">Hora de Visita</label>

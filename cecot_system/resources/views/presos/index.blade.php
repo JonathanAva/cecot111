@@ -113,17 +113,17 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="numeroIdentificacion" class="form-label">Número de Identificación (DUI)</label>
-                                    <input type="text" class="form-control" id="numeroIdentificacion" name="numeroIdentificacion" required>
+                                    <input type="text" class="form-control" id="numeroIdentificacion" name="numeroIdentificacion" maxlength="10" pattern="\d{1,10}" title="Debe contener solo números y un máximo de 10 dígitos" required>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="fechaIngreso" class="form-label">Fecha de Ingreso</label>
-                                    <input type="date" class="form-control" id="fechaIngreso" name="fechaIngreso" required>
+                                    <input type="date" class="form-control" id="fechaIngreso" name="fechaIngreso" min="{{ date('Y-m-d') }}" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="fechaLiberacion" class="form-label">Fecha de Liberación</label>
-                                    <input type="date" class="form-control" id="fechaLiberacion" name="fechaLiberacion">
+                                    <input type="date" class="form-control" id="fechaLiberacion"  min="{{ date('Y-m-d') }}" name="fechaLiberacion">
                                 </div>
                             </div>
                             <div class="row">
@@ -162,6 +162,44 @@
 
 @section('scripts')
 <script>
+     document.addEventListener('DOMContentLoaded', function () {
+        const fechaIngreso = document.getElementById('fechaIngreso');
+        const fechaLiberacion = document.getElementById('fechaLiberacion');
+
+        // Escuchar cambios en la fecha de ingreso
+        fechaIngreso.addEventListener('change', function () {
+            if (fechaIngreso.value) {
+                // Crear un objeto de fecha a partir de la fecha de ingreso
+                const fechaIngresoDate = new Date(fechaIngreso.value);
+
+                // Sumar un día a la fecha de ingreso
+                fechaIngresoDate.setDate(fechaIngresoDate.getDate() + 1);
+
+                // Formatear la fecha en formato YYYY-MM-DD
+                const fechaMinLiberacion = fechaIngresoDate.toISOString().split('T')[0];
+
+                // Establecer la fecha mínima de liberación
+                fechaLiberacion.min = fechaMinLiberacion;
+            }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const fechaNacimiento = document.getElementById('fechaNacimiento');
+
+        // Calcular la fecha máxima permitida (hace 18 años desde hoy)
+        const hoy = new Date();
+        const fechaMaxima = new Date(hoy.getFullYear() - 18, hoy.getMonth(), hoy.getDate());
+        fechaNacimiento.max = fechaMaxima.toISOString().split('T')[0];
+
+        // Validar que la fecha seleccionada cumpla con el requisito de ser mayor de 18 años
+        fechaNacimiento.addEventListener('change', function () {
+            const fechaSeleccionada = new Date(fechaNacimiento.value);
+            if (fechaSeleccionada > fechaMaxima) {
+                alert('El preso debe ser mayor de 18 años.');
+                fechaNacimiento.value = ''; // Limpiar el campo si no cumple
+            }
+        });
+    });
     $(document).ready(function () {
        
         $('#searchInput').on('input', function () {
