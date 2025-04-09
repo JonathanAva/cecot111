@@ -78,31 +78,36 @@ class VisitaController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        // Validar los datos
-        $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'parentesco' => 'required|string|max:255',
-            'fecha_visita' => 'required|string',
-            'hora_visita' => 'required|string',
-            'dui_preso' => 'required|string',
-            'id_preso' => 'required|exists:presos,id_preso',
-        ]);
+{
+    $request->validate([
+        'nombre' => 'required|string|max:255',
+        'parentesco' => 'required|string|max:255',
+        'fecha_visita' => 'required|date|after_or_equal:today',
+        'hora_visita' => 'required|date_format:H:i|after_or_equal:08:00|before_or_equal:16:00',
+        'dui_preso' => 'required|string|max:10',
+        'id_preso' => 'required|exists:presos,id_preso',
+    ]);
 
-        // Buscar la visita
-        $visita = Visita::findOrFail($id);
+    $preso = Preso::where('id_preso', $request->id_preso)
+        ->where('numeroIdentificacion', $request->dui_preso)
+        ->first();
 
-        // Actualizar los datos
-        $visita->update([
-            'nombreDelVisitante' => $validatedData['nombre'],
-            'relacionConElPreso' => $validatedData['parentesco'],
-            'fechaDeVisita' => $validatedData['fecha_visita'],
-            'horaDeVisita' => $validatedData['hora_visita'],
-            'id_preso' => $validatedData['id_preso'],
-        ]);
-
-        return redirect()->route('visitas.index')->with('success', 'Visita actualizada exitosamente.');
+    if (!$preso) {
+        return redirect()->back()->withErrors(['dui_preso' => 'DUI no encontrado o no coincide con el preso seleccionado.'])->withInput();
     }
+
+    $visita = Visita::findOrFail($id);
+
+    $visita->update([
+        'nombreDelVisitante' => $request->nombre,
+        'relacionConElPreso' => $request->parentesco,
+        'fechaDeVisita' => $request->fecha_visita,
+        'horaDeVisita' => $request->hora_visita,
+        'id_preso' => $request->id_preso,
+    ]);
+
+    return redirect()->route('visitas.index')->with('success', 'Visita actualizada exitosamente.');
+}
     public function destroy($id)
     {
         $visita = Visita::findOrFail($id);
